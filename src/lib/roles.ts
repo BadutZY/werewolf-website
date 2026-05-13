@@ -10,6 +10,7 @@ import lycan from "@/assets/roles/lycan.png";
 import bodyguard from "@/assets/roles/bodyguard.png";
 import wolfCub from "@/assets/roles/wolf-cub.jpg";
 import tanner from "@/assets/roles/tanner.jpg";
+import hunter from "@/assets/roles/hunter.jpg";
 
 export type Team = "werewolf" | "village";
 
@@ -60,7 +61,6 @@ export const ROLES: Role[] = [
   },
 
   // ── Tambahan Role ─────────────────────────────────────────────
-
   {
     id: "lone-wolf",
     name: "Lone Wolf",
@@ -129,6 +129,14 @@ export const ROLES: Role[] = [
     team: "village",
     image: lycan,
     description: "You are a Villager, but appear to the Seer as a Werewolf.",
+  },
+
+  {
+    id: "Hunter",
+    name: "Hunter",
+    team: "village",
+    image: hunter,
+    description: "If you are eliminated, you may choose to eliminate another player.",
   },
 
 ];
