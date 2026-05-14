@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Moon, Play, Info } from "lucide-react";
+import { Play, Info } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
@@ -23,8 +23,8 @@ export function MenuScreen({ onStart }: { onStart: () => void }) {
           className="relative mb-6"
         >
           <div className="absolute inset-0 blur-3xl bg-primary/40 rounded-full" />
-          <div className="relative w-28 h-28 rounded-3xl bg-gradient-to-br from-primary via-accent to-destructive flex items-center justify-center shadow-2xl shadow-primary/40">
-            <Moon className="w-14 h-14 text-primary-foreground" />
+          <div className="relative w-28 h-28 rounded-3xl shadow-2xl shadow-primary/40 overflow-hidden">
+            <img src="/icon.png" alt="Werewolf" className="w-full h-full object-cover" />
           </div>
         </motion.div>
 
@@ -34,7 +34,7 @@ export function MenuScreen({ onStart }: { onStart: () => void }) {
           transition={{ delay: 0.1 }}
           className="text-5xl font-black tracking-tight text-glow"
         >
-          WEREWOLF
+          WEREWOLF CARD
         </motion.h1>
         <motion.p
           initial={{ opacity: 0 }}
@@ -42,7 +42,7 @@ export function MenuScreen({ onStart }: { onStart: () => void }) {
           transition={{ delay: 0.25 }}
           className="text-sm text-muted-foreground mt-2 uppercase tracking-[0.3em]"
         >
-          One Device · Party Edition
+          Made By BadutZY
         </motion.p>
       </div>
 
