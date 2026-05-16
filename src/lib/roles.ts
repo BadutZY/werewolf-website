@@ -11,6 +11,7 @@ import bodyguard from "@/assets/roles/bodyguard.png";
 import wolfCub from "@/assets/roles/wolf-cub.jpg";
 import tanner from "@/assets/roles/tanner.jpg";
 import hunter from "@/assets/roles/hunter.jpg";
+import witch from "@/assets/roles/witch.png";
 
 export type Team = "werewolf" | "village";
 
@@ -138,6 +139,14 @@ export const ROLES: Role[] = [
     image: hunter,
     description: "If you are eliminated, you may choose to eliminate another player.",
   },
+
+  {
+    id: "Witch",
+    name: "Witch",
+    team: "village",
+    image: witch,
+    description: "You may save or eliminate a player at night once each per game.",
+  }
 
 ];
 
