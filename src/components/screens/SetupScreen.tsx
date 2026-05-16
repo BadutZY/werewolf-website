@@ -25,7 +25,6 @@ export function SetupScreen() {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-6 space-y-6">
-        {/* Player count */}
         <motion.section
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,7 +52,6 @@ export function SetupScreen() {
           </div>
         </motion.section>
 
-        {/* Role composition */}
         <section>
           <div className="flex items-center justify-between mb-3 px-1">
             <div className="flex items-center gap-2">
@@ -100,7 +98,6 @@ export function SetupScreen() {
                   whileHover={{ y: -3 }}
                   className="flex flex-col"
                 >
-                  {/* Card */}
                   <button
                     type="button"
                     onClick={() => setRoleCount(role.id, count + 1)}
@@ -118,7 +115,6 @@ export function SetupScreen() {
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/40 to-transparent" />
-                    {/* team badge */}
                     <div className="absolute top-2 left-2">
                       <span
                         className={`text-[9px] px-1.5 py-0.5 rounded-md uppercase font-bold backdrop-blur-md ${
@@ -130,7 +126,6 @@ export function SetupScreen() {
                         {role.team}
                       </span>
                     </div>
-                    {/* count badge */}
                     <AnimatePresence>
                       {active && (
                         <motion.div
@@ -144,7 +139,6 @@ export function SetupScreen() {
                         </motion.div>
                       )}
                     </AnimatePresence>
-                    {/* name */}
                     <div className="absolute inset-x-0 bottom-0 p-2 text-center">
                       <div className="font-black text-sm truncate text-glow">{role.name}</div>
                       <p className="text-[10px] text-muted-foreground line-clamp-2 leading-tight mt-0.5">
@@ -153,7 +147,6 @@ export function SetupScreen() {
                     </div>
                   </button>
 
-                  {/* Counter row below card */}
                   <div className="mt-2 flex items-center gap-1.5">
                     <Button
                       size="icon"
@@ -190,7 +183,6 @@ export function SetupScreen() {
         </section>
       </main>
 
-      {/* Sticky footer */}
       <div className="fixed bottom-0 inset-x-0 p-4 backdrop-blur-xl bg-background/80 border-t border-border/40">
         <div className="max-w-3xl mx-auto space-y-2">
           {!canStart && (

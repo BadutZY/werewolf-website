@@ -46,7 +46,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { AlertTriangle } from "lucide-react";
 
-// ── LocalStorage Keys ──────────────────────────────────────────────────────
 const LS_FILTER_KEY = "werewolf-filter-roles";
 const LS_HIDDEN_KEY = "werewolf-hidden-players";
 const LS_HIDE_MODE_KEY = "werewolf-hide-mode";
@@ -59,8 +58,6 @@ function fmt(sec: number) {
   return `${m}:${s}`;
 }
 
-// ── Scroll Lock Hook ───────────────────────────────────────────────────────
-// Counter global agar beberapa modal tidak saling override satu sama lain.
 let _scrollLockCount = 0;
 let _scrollLockSavedY = 0;
 
@@ -94,7 +91,6 @@ function useScrollLock(active: boolean) {
   }, [active]);
 }
 
-// ── Confetti ───────────────────────────────────────────────────────────────
 function ConfettiParticles() {
   const particles = Array.from({ length: 30 }, (_, i) => ({
     id: i,
@@ -122,7 +118,6 @@ function ConfettiParticles() {
   );
 }
 
-// ── Death Overlay ──────────────────────────────────────────────────────────
 function DeathOverlay({ name, onDone }: { name: string; onDone: () => void }) {
   useEffect(() => { const t = setTimeout(onDone, 2800); return () => clearTimeout(t); }, [onDone]);
   return (
@@ -147,7 +142,6 @@ function DeathOverlay({ name, onDone }: { name: string; onDone: () => void }) {
   );
 }
 
-// ── Filter Panel ───────────────────────────────────────────────────────────
 interface FilterPanelProps {
   open: boolean; onClose: () => void; activeRoleIds: string[];
   selectedRoles: Set<string>; onToggleRole: (id: string) => void;
@@ -197,7 +191,6 @@ function FilterPanel({ open, onClose, activeRoleIds, selectedRoles, onToggleRole
   );
 }
 
-// ── Vote Types ─────────────────────────────────────────────────────────────
 interface VoteEntry { voterId: string; voterName: string; targetId: string | null; }
 interface VoteSession { active: boolean; currentVoterIndex: number; votes: VoteEntry[]; finished: boolean; }
 type VotePhase = "transition" | "result";
@@ -209,7 +202,6 @@ interface VoteHistoryRecord {
   players: Array<{ id: string; name: string }>;
 }
 
-// ── Vote History Panel ─────────────────────────────────────────────────────
 interface VoteHistoryPanelProps {
   open: boolean;
   onClose: () => void;
@@ -248,7 +240,6 @@ function VoteHistoryPanel({ open, onClose, history }: VoteHistoryPanelProps) {
             <div className="max-w-lg mx-auto px-5 pt-4 pb-10">
               <div className="w-10 h-1 rounded-full bg-border/60 mx-auto mb-5" />
 
-              {/* Header */}
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-base flex items-center gap-2">
                   <History className="w-4 h-4 text-accent" />
@@ -272,7 +263,6 @@ function VoteHistoryPanel({ open, onClose, history }: VoteHistoryPanelProps) {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {/* Ringkasan perolehan suara */}
                   {sortedResults.length > 0 && (
                     <div>
                       <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-2">Perolehan Suara</p>
@@ -309,7 +299,6 @@ function VoteHistoryPanel({ open, onClose, history }: VoteHistoryPanelProps) {
                     </div>
                   )}
 
-                  {/* Detail per voter */}
                   <div>
                     <p className="text-[11px] uppercase tracking-wider text-muted-foreground mb-2">Detail per Pemain</p>
                     <div className="space-y-1.5">
@@ -354,7 +343,6 @@ function VoteHistoryPanel({ open, onClose, history }: VoteHistoryPanelProps) {
 }
 
 
-// ── Voter Transition Screen ────────────────────────────────────────────────
 function VoterTransition({ voterName, voterIndex, total, onReady }: { voterName: string; voterIndex: number; total: number; onReady: () => void }) {
   useScrollLock(true);
   return (
@@ -366,7 +354,6 @@ function VoterTransition({ voterName, voterIndex, total, onReady }: { voterName:
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Animated rings */}
       <div className="relative flex items-center justify-center mb-10">
         {[0, 1, 2].map((i) => (
           <motion.div
@@ -378,7 +365,6 @@ function VoterTransition({ voterName, voterIndex, total, onReady }: { voterName:
             transition={{ delay: i * 0.35, duration: 2, repeat: Infinity, ease: "easeOut" }}
           />
         ))}
-        {/* Center avatar */}
         <motion.div
           className="w-24 h-24 rounded-full flex items-center justify-center font-black text-4xl relative z-10 shadow-2xl"
           style={{ background: "linear-gradient(135deg, oklch(0.55 0.18 30), oklch(0.62 0.22 22))", boxShadow: "0 0 40px oklch(0.55 0.18 30 / 0.5)" }}
@@ -390,7 +376,6 @@ function VoterTransition({ voterName, voterIndex, total, onReady }: { voterName:
         </motion.div>
       </div>
 
-      {/* Step indicator */}
       <motion.div className="flex items-center gap-1.5 mb-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
         {Array.from({ length: total }).map((_, i) => (
           <div key={i} className={`h-1.5 rounded-full transition-all ${i < voterIndex ? "bg-accent/60 w-4" : i === voterIndex ? "bg-accent w-6" : "bg-border/50 w-1.5"}`} />
@@ -425,7 +410,6 @@ function VoterTransition({ voterName, voterIndex, total, onReady }: { voterName:
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
-        {/* Shine effect */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
           initial={{ x: "-100%" }}
@@ -441,7 +425,6 @@ function VoterTransition({ voterName, voterIndex, total, onReady }: { voterName:
   );
 }
 
-// ── Vote Result Bar ────────────────────────────────────────────────────────
 function VoteResultBar({ name, count, maxCount, rank, isTop, delay }: { name: string; count: number; maxCount: number; rank: number; isTop: boolean; delay: number }) {
   const pct = maxCount > 0 ? (count / maxCount) * 100 : 0;
   return (
@@ -451,7 +434,6 @@ function VoteResultBar({ name, count, maxCount, rank, isTop, delay }: { name: st
       transition={{ delay, type: "spring", stiffness: 160, damping: 20 }}
       className={`relative rounded-2xl overflow-hidden border-2 ${isTop ? "border-accent/70" : "border-border/30"}`}
     >
-      {/* BG fill */}
       <motion.div
         className={`absolute inset-y-0 left-0 ${isTop ? "bg-gradient-to-r from-accent/40 to-primary/25" : "bg-secondary/25"}`}
         initial={{ width: 0 }}
@@ -474,9 +456,8 @@ function VoteResultBar({ name, count, maxCount, rank, isTop, delay }: { name: st
   );
 }
 
-// ── Vote Confirm Dialog ────────────────────────────────────────────────────
 interface VoteConfirmProps {
-  targetName: string | null; // null = skip
+  targetName: string | null;
   onConfirm: () => void;
   onCancel: () => void;
 }
@@ -536,7 +517,6 @@ function VoteConfirmDialog({ targetName, onConfirm, onCancel }: VoteConfirmProps
   );
 }
 
-// ── Vote Modal (orchestrates phases) ──────────────────────────────────────
 interface VoteModalProps {
   open: boolean; onClose: () => void; session: VoteSession;
   alivePlayers: Array<{ id: string; name: string; roleId: string }>;
@@ -545,9 +525,6 @@ interface VoteModalProps {
 
 function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVote }: VoteModalProps) {
   useScrollLock(open);
-  // "transition" = show turn announcement overlay
-  // "result" = show result screen
-  // When neither, modal is closed (voting happens inline on cards)
   const [phase, setPhase] = useState<"transition" | "result">(session.finished ? "result" : "transition");
 
   useEffect(() => {
@@ -556,7 +533,6 @@ function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVo
     else setPhase("transition");
   }, [open, session.finished, session.currentVoterIndex]);
 
-  // Results
   const voteCounts: Record<string, number> = {};
   session.votes.forEach((v) => { if (v.targetId) voteCounts[v.targetId] = (voteCounts[v.targetId] || 0) + 1; });
   const maxVotes = Math.max(0, ...Object.values(voteCounts));
@@ -568,7 +544,6 @@ function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVo
 
   return (
     <AnimatePresence mode="wait">
-      {/* ── Phase: Turn Announcement ── */}
       {phase === "transition" && currentVoter && (
         <VoterTransition
           key={`t-${session.currentVoterIndex}`}
@@ -579,7 +554,6 @@ function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVo
         />
       )}
 
-      {/* ── Phase: Result ── */}
       {phase === "result" && (
         <motion.div
           key="result"
@@ -590,7 +564,6 @@ function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVo
         >
           <ConfettiParticles />
 
-          {/* Backdrop */}
           <motion.div className="absolute inset-0 bg-black/80 backdrop-blur-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} />
 
           <motion.div
@@ -599,7 +572,6 @@ function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVo
             animate={{ y: 0, scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 24, delay: 0.1 }}
           >
-            {/* Result header with glow */}
             <div className="relative px-6 pt-8 pb-6 text-center border-b border-border/30 overflow-hidden">
               <motion.div className="absolute inset-0 bg-gradient-to-b from-accent/20 to-transparent" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} />
               <motion.div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at top, oklch(0.55 0.18 30 / 0.25), transparent 65%)" }} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} />
@@ -612,7 +584,6 @@ function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVo
               </motion.p>
             </div>
 
-            {/* Bars */}
             <div className="px-5 py-4 space-y-2.5 max-h-[35vh] overflow-y-auto">
               {sortedResults.length > 0 ? (
                 sortedResults.map(({ player, count }, idx) => (
@@ -623,7 +594,6 @@ function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVo
               )}
             </div>
 
-            {/* Rekap per voter - collapsible */}
             {session.votes.length > 0 && (
               <div className="px-5 pb-3">
                 <details className="group">
@@ -647,7 +617,6 @@ function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVo
               </div>
             )}
 
-            {/* Actions */}
             <div className="flex gap-2.5 px-5 pb-7">
               <button onClick={onResetVote} className="flex-1 h-12 rounded-2xl border-2 border-border/50 bg-secondary/30 text-sm font-bold flex items-center justify-center gap-2 hover:bg-secondary/60 transition-colors active:scale-95">
                 <RotateCcw className="w-4 h-4" /> Ulang
@@ -667,12 +636,10 @@ function VoteModal({ open, onClose, session, alivePlayers, onCastVote, onResetVo
   );
 }
 
-// ── Player Card ────────────────────────────────────────────────────────────
 interface PlayerCardProps {
   p: { id: string; name: string; roleId: string; alive: boolean; note?: string };
   index: number; hideMode: boolean; isHidden: boolean;
   onToggleHide: () => void; onEliminate: () => void; onNote: () => void;
-  // Vote props
   voteActive?: boolean;
   isCurrentVoter?: boolean;
   hasVoted?: boolean;
@@ -685,9 +652,7 @@ function PlayerCard({ p, index, hideMode, isHidden, onToggleHide, onEliminate, o
   const isWolf = role.team === "werewolf";
   const initial = p.name.charAt(0).toUpperCase();
 
-  // Highlight this card when it's the voter's turn
   const voterHighlight = voteActive && isCurrentVoter;
-  // Dim non-voters during active vote (but don't hide them)
   const dimmed = voteActive && !isCurrentVoter && !isVoterSelf && !hasVoted;
 
   return (
@@ -715,7 +680,6 @@ function PlayerCard({ p, index, hideMode, isHidden, onToggleHide, onEliminate, o
               <div className="absolute top-0 right-0 bottom-0 w-5 flex items-center justify-center"><span className={`text-[8px] font-black uppercase tracking-[0.2em] select-none ${isWolf ? "text-destructive/70" : "text-primary/70"}`} style={{ writingMode: "vertical-rl", textOrientation: "mixed", transform: "rotate(180deg)" }}>{role.name}</span></div>
               <div className="absolute top-2 left-2"><span className={`text-[8px] px-1.5 py-0.5 rounded-md uppercase font-bold backdrop-blur-md ${isWolf ? "bg-destructive/30 text-destructive-foreground" : "bg-primary/30 text-primary-foreground"}`}>{role.team}</span></div>
               {p.note && <div className="absolute top-2 right-6 w-2 h-2 rounded-full bg-accent shadow shadow-accent/60" />}
-              {/* Voter badge */}
               {voteActive && isCurrentVoter && (
                 <motion.div
                   className="absolute top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider text-white"
@@ -726,7 +690,6 @@ function PlayerCard({ p, index, hideMode, isHidden, onToggleHide, onEliminate, o
                   <Flame className="w-2.5 h-2.5 inline mr-0.5" />giliran
                 </motion.div>
               )}
-              {/* Already voted badge */}
               {voteActive && hasVoted && (
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-wider bg-green-500/30 text-green-400 border border-green-500/30 whitespace-nowrap">
                   <Check className="w-2.5 h-2.5 inline mr-0.5" />sudah vote
@@ -753,9 +716,7 @@ function PlayerCard({ p, index, hideMode, isHidden, onToggleHide, onEliminate, o
         )}
       </div>
 
-      {/* Bottom action row */}
       <div className="mt-2 flex flex-col gap-1.5">
-        {/* VOTE button — shown for all alive players except the current voter themselves */}
         {voteActive && p.alive && !isCurrentVoter && onVoteThis && (
           <motion.button
             onClick={onVoteThis}
@@ -769,7 +730,6 @@ function PlayerCard({ p, index, hideMode, isHidden, onToggleHide, onEliminate, o
             VOTE
           </motion.button>
         )}
-        {/* Skip — shown on current voter's own card */}
         {voteActive && p.alive && isCurrentVoter && onVoteThis && (
           <motion.button
             onClick={onVoteThis}
@@ -793,7 +753,6 @@ function PlayerCard({ p, index, hideMode, isHidden, onToggleHide, onEliminate, o
   );
 }
 
-// ── Main PlayingScreen ─────────────────────────────────────────────────────
 export function PlayingScreen() {
   const { state, updatePlayer, setGlobalNotes, resetGame } = useGameStore();
   const [noteOpenId, setNoteOpenId] = useState<string | null>(null);
@@ -801,41 +760,35 @@ export function PlayingScreen() {
   const [confirmReset, setConfirmReset] = useState(false);
   const [deathAnimation, setDeathAnimation] = useState<{ name: string; id: string } | null>(null);
 
-  // ── Persistent: Hidden players ──
   const [hiddenPlayers, setHiddenPlayers] = useState<Set<string>>(() => {
     try { const r = localStorage.getItem(LS_HIDDEN_KEY); return r ? new Set(JSON.parse(r)) : new Set(); } catch { return new Set(); }
   });
   const [hideMode, setHideMode] = useState<boolean>(() => {
     try { return localStorage.getItem(LS_HIDE_MODE_KEY) === "true"; } catch { return false; }
   });
-  useEffect(() => { try { localStorage.setItem(LS_HIDDEN_KEY, JSON.stringify(Array.from(hiddenPlayers))); } catch {} }, [hiddenPlayers]);
-  useEffect(() => { try { localStorage.setItem(LS_HIDE_MODE_KEY, String(hideMode)); } catch {} }, [hideMode]);
+  useEffect(() => { try { localStorage.setItem(LS_HIDDEN_KEY, JSON.stringify(Array.from(hiddenPlayers))); } catch { } }, [hiddenPlayers]);
+  useEffect(() => { try { localStorage.setItem(LS_HIDE_MODE_KEY, String(hideMode)); } catch { } }, [hideMode]);
 
-  // ── Persistent: Filter ──
   const [filterOpen, setFilterOpen] = useState(false);
   const [selectedRoleFilter, setSelectedRoleFilter] = useState<Set<string>>(() => {
     try { const r = localStorage.getItem(LS_FILTER_KEY); return r ? new Set(JSON.parse(r)) : new Set(); } catch { return new Set(); }
   });
-  useEffect(() => { try { localStorage.setItem(LS_FILTER_KEY, JSON.stringify(Array.from(selectedRoleFilter))); } catch {} }, [selectedRoleFilter]);
+  useEffect(() => { try { localStorage.setItem(LS_FILTER_KEY, JSON.stringify(Array.from(selectedRoleFilter))); } catch { } }, [selectedRoleFilter]);
 
-  // ── Persistent: Vote ──
   const [voteOpen, setVoteOpen] = useState(false);
   const [voteSession, setVoteSession] = useState<VoteSession>(() => {
     try { const r = localStorage.getItem(LS_VOTE_KEY); return r ? JSON.parse(r) : { active: false, currentVoterIndex: 0, votes: [], finished: false }; } catch { return { active: false, currentVoterIndex: 0, votes: [], finished: false }; }
   });
-  useEffect(() => { try { localStorage.setItem(LS_VOTE_KEY, JSON.stringify(voteSession)); } catch {} }, [voteSession]);
+  useEffect(() => { try { localStorage.setItem(LS_VOTE_KEY, JSON.stringify(voteSession)); } catch { } }, [voteSession]);
 
-  // Confirm dialog: { targetId: string | null, targetName: string | null }
   const [voteConfirmPending, setVoteConfirmPending] = useState<{ targetId: string | null; targetName: string | null } | null>(null);
 
-  // ── Vote History ──
   const [voteHistory, setVoteHistory] = useState<VoteHistoryRecord | null>(() => {
     try { const r = localStorage.getItem(LS_VOTE_HISTORY_KEY); return r ? JSON.parse(r) : null; } catch { return null; }
   });
   const [historyOpen, setHistoryOpen] = useState(false);
-  useEffect(() => { try { if (voteHistory) localStorage.setItem(LS_VOTE_HISTORY_KEY, JSON.stringify(voteHistory)); else localStorage.removeItem(LS_VOTE_HISTORY_KEY); } catch {} }, [voteHistory]);
+  useEffect(() => { try { if (voteHistory) localStorage.setItem(LS_VOTE_HISTORY_KEY, JSON.stringify(voteHistory)); else localStorage.removeItem(LS_VOTE_HISTORY_KEY); } catch { } }, [voteHistory]);
 
-  // ── Timer ──
   const [timerOpen, setTimerOpen] = useState(false);
   const [duration, setDuration] = useState(180);
   const [remaining, setRemaining] = useState(0);
@@ -850,7 +803,7 @@ export function PlayingScreen() {
       setRemaining(left);
       if (left <= 0) {
         setRunning(false);
-        try { const ctx = new (window.AudioContext || (window as any).webkitAudioContext)(); const o = ctx.createOscillator(); const g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value = 880; g.gain.value = 0.2; o.start(); setTimeout(() => { o.stop(); ctx.close(); }, 600); } catch {}
+        try { const ctx = new (window.AudioContext || (window as any).webkitAudioContext)(); const o = ctx.createOscillator(); const g = ctx.createGain(); o.connect(g); g.connect(ctx.destination); o.frequency.value = 880; g.gain.value = 0.2; o.start(); setTimeout(() => { o.stop(); ctx.close(); }, 600); } catch { }
       }
     }, 250);
     return () => clearInterval(id);
@@ -897,7 +850,6 @@ export function PlayingScreen() {
     else updatePlayer(p.id, { alive: true });
   };
 
-  // ── Vote handlers ──
   const alivePlayers = state.players.filter((p) => p.alive);
   const voteInProgress = voteSession.active && !voteSession.finished;
   const voteFinished = voteSession.active && voteSession.finished;
@@ -907,11 +859,9 @@ export function PlayingScreen() {
 
   const startVote = useCallback(() => {
     setVoteSession({ active: true, currentVoterIndex: 0, votes: [], finished: false });
-    // Show turn announcement overlay
     setVoteOpen(true);
   }, []);
 
-  // Called when a player presses VOTE on another player card (or Lewati on own card)
   const requestVote = useCallback((targetId: string | null, targetName: string | null) => {
     setVoteConfirmPending({ targetId, targetName });
   }, []);
@@ -926,10 +876,8 @@ export function PlayingScreen() {
       const finished = nextIndex >= alivePlayers.length;
       const updated = { ...prev, votes: newVotes, currentVoterIndex: nextIndex, finished };
       if (!finished) {
-        // Show next voter's turn announcement
         setTimeout(() => setVoteOpen(true), 100);
       } else {
-        // Show results
         setTimeout(() => setVoteOpen(true), 100);
       }
       return updated;
@@ -943,7 +891,6 @@ export function PlayingScreen() {
 
   const closeVote = useCallback(() => {
     setVoteOpen(false);
-    // Simpan ke riwayat sebelum reset (hanya kalau sudah selesai)
     setVoteSession((prev) => {
       if (prev.finished && prev.votes.length > 0) {
         const record: VoteHistoryRecord = {
@@ -956,22 +903,19 @@ export function PlayingScreen() {
       }
       return { active: false, currentVoterIndex: 0, votes: [], finished: false };
     });
-    try { localStorage.removeItem(LS_VOTE_KEY); } catch {}
+    try { localStorage.removeItem(LS_VOTE_KEY); } catch { }
   }, [alivePlayers]);
 
-  // When turn announcement is dismissed, close modal (voting happens inline)
   const handleTurnAnnouncementReady = useCallback(() => {
     setVoteOpen(false);
   }, []);
 
   return (
     <div className="min-h-screen pb-28">
-      {/* Death overlay */}
       <AnimatePresence>
         {deathAnimation && <DeathOverlay key={deathAnimation.id} name={deathAnimation.name} onDone={() => setDeathAnimation(null)} />}
       </AnimatePresence>
 
-      {/* Vote confirm dialog */}
       <AnimatePresence>
         {voteConfirmPending && (
           <VoteConfirmDialog
@@ -982,7 +926,6 @@ export function PlayingScreen() {
         )}
       </AnimatePresence>
 
-      {/* Vote system: turn announcement + result */}
       <AnimatePresence>
         {voteOpen && (
           <VoteModal
@@ -996,7 +939,6 @@ export function PlayingScreen() {
         )}
       </AnimatePresence>
 
-      {/* ── Header ── */}
       <header className="sticky top-0 z-20 backdrop-blur-xl bg-background/85 border-b border-border/40">
         <div className="px-4 pt-3 pb-2 flex items-center gap-3">
           <div className="flex-1 min-w-0">
@@ -1010,42 +952,35 @@ export function PlayingScreen() {
         </div>
 
         <div className="px-4 pb-2.5 flex items-center gap-2">
-          {/* Timer */}
           <button onClick={() => setTimerOpen(true)} className={`flex-1 flex items-center justify-center gap-1.5 h-9 rounded-xl border font-semibold text-xs transition-colors ${timerActive ? "bg-accent/20 text-accent border-accent/40" : "bg-secondary/40 text-muted-foreground border-border/40 hover:text-foreground"}`}>
             <TimerIcon className="w-3.5 h-3.5 shrink-0" />
             {timerActive ? <span className="font-mono font-black tabular-nums">{fmt(remaining)}</span> : <span>Timer</span>}
           </button>
 
-          {/* Filter */}
           <button onClick={() => setFilterOpen(true)} className={`relative h-9 w-9 rounded-xl border flex items-center justify-center transition-colors ${filterActive ? "bg-accent/20 text-accent border-accent/40" : "bg-secondary/40 text-muted-foreground border-border/40"}`}>
             <Filter className="w-4 h-4" />
             {filterActive && <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-accent" />}
           </button>
 
-          {/* Hide */}
           <button onClick={() => setHideMode((v) => !v)} className={`h-9 w-9 rounded-xl border flex items-center justify-center transition-colors ${hideMode ? "bg-accent/20 text-accent border-accent/40" : "bg-secondary/40 text-muted-foreground border-border/40"}`}>
             {hideMode ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
           </button>
 
-          {/* Notes */}
           <button onClick={() => setGlobalOpen(true)} className={`h-9 w-9 rounded-xl border flex items-center justify-center transition-colors relative ${state.globalNotes ? "bg-primary/15 text-primary border-primary/40" : "bg-secondary/40 text-muted-foreground border-border/40"}`}>
             <NotebookPen className="w-4 h-4" />
             {state.globalNotes && <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-primary" />}
           </button>
 
-          {/* Vote History */}
           <button onClick={() => setHistoryOpen(true)} className={`h-9 w-9 rounded-xl border flex items-center justify-center transition-colors relative ${voteHistory ? "bg-accent/20 text-accent border-accent/40" : "bg-secondary/40 text-muted-foreground border-border/40"}`}>
             <History className="w-4 h-4" />
             {voteHistory && <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-accent" />}
           </button>
 
-          {/* Reset */}
           <button onClick={() => setConfirmReset(true)} className="h-9 w-9 rounded-xl border bg-secondary/40 text-muted-foreground border-border/40 flex items-center justify-center hover:text-destructive transition-colors">
             <RotateCcw className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Hide sub-bar */}
         <AnimatePresence>
           {hideMode && (
             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="overflow-hidden border-t border-border/30">
@@ -1060,8 +995,7 @@ export function PlayingScreen() {
           )}
         </AnimatePresence>
       </header>
-
-      {/* Timer floating bar */}
+      
       <AnimatePresence>
         {timerActive && (
           <motion.div initial={{ y: 80, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 80, opacity: 0 }} transition={{ type: "spring", stiffness: 260, damping: 28 }} className="fixed bottom-[72px] inset-x-0 z-20 backdrop-blur-xl bg-background/90 border-t border-border/40">
@@ -1078,7 +1012,6 @@ export function PlayingScreen() {
         )}
       </AnimatePresence>
 
-      {/* ── Main grid ── */}
       <main className="px-3 py-4 mx-auto max-w-lg md:max-w-5xl">
         <AnimatePresence>
           {filterActive && (
@@ -1095,7 +1028,6 @@ export function PlayingScreen() {
           <span className="text-[11px] text-muted-foreground">{totalAlive} masih hidup</span>
         </div>
 
-        {/* 2 kolom mobile, 4 kolom desktop */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           <AnimatePresence>
             {visiblePlayers.map((p, i) => {
@@ -1117,9 +1049,7 @@ export function PlayingScreen() {
                   onVoteThis={
                     voteInProgress && currentVoter && p.alive
                       ? isCurrentVoter
-                        // current voter taps own card = skip/lewati
                         ? () => requestVote(null, null)
-                        // others = vote this player
                         : () => requestVote(p.id, p.name)
                       : undefined
                   }
@@ -1130,7 +1060,6 @@ export function PlayingScreen() {
         </div>
       </main>
 
-      {/* ── Floating Vote Button (Bottom) ── */}
       <div className="fixed bottom-0 inset-x-0 z-10 px-4 pb-5 pt-3 pointer-events-none">
         <div className="max-w-lg mx-auto pointer-events-auto">
           <motion.button
@@ -1142,16 +1071,15 @@ export function PlayingScreen() {
               background: voteInProgress
                 ? "linear-gradient(135deg, oklch(0.55 0.18 30), oklch(0.62 0.22 22))"
                 : voteFinished
-                ? "linear-gradient(135deg, oklch(0.45 0.15 270), oklch(0.52 0.18 260))"
-                : "linear-gradient(135deg, oklch(0.55 0.18 30), oklch(0.62 0.22 22))",
+                  ? "linear-gradient(135deg, oklch(0.45 0.15 270), oklch(0.52 0.18 260))"
+                  : "linear-gradient(135deg, oklch(0.55 0.18 30), oklch(0.62 0.22 22))",
               boxShadow: voteInProgress
                 ? "0 8px 32px oklch(0.55 0.18 30 / 0.5)"
                 : voteFinished
-                ? "0 8px 32px oklch(0.45 0.15 270 / 0.5)"
-                : "0 8px 32px oklch(0.55 0.18 30 / 0.35)",
+                  ? "0 8px 32px oklch(0.45 0.15 270 / 0.5)"
+                  : "0 8px 32px oklch(0.55 0.18 30 / 0.35)",
             }}
           >
-            {/* Shine sweep effect */}
             <motion.div
               className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent"
               initial={{ x: "-100%" }}
@@ -1165,8 +1093,8 @@ export function PlayingScreen() {
                   ? `Giliran ${currentVoter.name} (${voteSession.currentVoterIndex + 1}/${alivePlayers.length})`
                   : `Vote — ${voteSession.currentVoterIndex + 1} / ${alivePlayers.length}`
                 : voteFinished
-                ? "Lihat Hasil Vote"
-                : "Mulai Vote"}
+                  ? "Lihat Hasil Vote"
+                  : "Mulai Vote"}
             </span>
             {(voteInProgress || voteFinished) && (
               <motion.span
@@ -1179,13 +1107,10 @@ export function PlayingScreen() {
         </div>
       </div>
 
-      {/* Filter Panel */}
       <FilterPanel open={filterOpen} onClose={() => setFilterOpen(false)} activeRoleIds={activeRoleIds} selectedRoles={selectedRoleFilter} onToggleRole={toggleRoleFilter} onSelectAll={filterSelectAll} onClearAll={filterClearAll} roleLabelMap={roleLabelMap} />
 
-      {/* Vote History Panel */}
       <VoteHistoryPanel open={historyOpen} onClose={() => setHistoryOpen(false)} history={voteHistory} />
 
-      {/* Timer Dialog */}
       <Dialog open={timerOpen} onOpenChange={setTimerOpen}>
         <DialogContent className="glass-strong rounded-3xl w-[calc(100%-2rem)] max-w-sm mx-auto">
           <DialogHeader><DialogTitle className="flex items-center gap-2"><TimerIcon className="w-5 h-5 text-accent" /> Atur Timer</DialogTitle></DialogHeader>
@@ -1217,8 +1142,7 @@ export function PlayingScreen() {
           <Button onClick={startTimer} disabled={duration <= 0} className="w-full h-12 rounded-2xl bg-gradient-to-r from-primary to-accent disabled:opacity-40 mt-1"><Play className="w-4 h-4 mr-1" /> Mulai Timer</Button>
         </DialogContent>
       </Dialog>
-
-      {/* Per-player note */}
+      
       <Dialog open={!!noteTarget} onOpenChange={(o) => !o && setNoteOpenId(null)}>
         <DialogContent className="glass-strong rounded-3xl w-[calc(100%-2rem)] max-w-sm mx-auto">
           <DialogHeader><DialogTitle>Catatan untuk {noteTarget?.name}</DialogTitle></DialogHeader>
@@ -1227,7 +1151,6 @@ export function PlayingScreen() {
         </DialogContent>
       </Dialog>
 
-      {/* Global notes */}
       <Dialog open={globalOpen} onOpenChange={setGlobalOpen}>
         <DialogContent className="glass-strong rounded-3xl w-[calc(100%-2rem)] max-w-sm mx-auto">
           <DialogHeader><DialogTitle className="flex items-center gap-2"><NotebookPen className="w-5 h-5 text-primary" /> Catatan Moderator</DialogTitle></DialogHeader>
@@ -1236,7 +1159,6 @@ export function PlayingScreen() {
         </DialogContent>
       </Dialog>
 
-      {/* Reset confirm */}
       <AlertDialog open={confirmReset} onOpenChange={setConfirmReset}>
         <AlertDialogContent className="glass-strong rounded-3xl w-[calc(100%-2rem)] max-w-sm mx-auto border-destructive/30">
           <AlertDialogHeader>
@@ -1246,7 +1168,7 @@ export function PlayingScreen() {
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-col gap-2 sm:flex-row">
             <AlertDialogCancel className="flex-1 h-12 rounded-2xl mt-0">Lanjut Bermain</AlertDialogCancel>
-            <AlertDialogAction onClick={() => { try { localStorage.removeItem(LS_FILTER_KEY); localStorage.removeItem(LS_HIDDEN_KEY); localStorage.removeItem(LS_HIDE_MODE_KEY); localStorage.removeItem(LS_VOTE_KEY); localStorage.removeItem(LS_VOTE_HISTORY_KEY); } catch {} setVoteHistory(null); resetGame(); }} className="flex-1 h-12 rounded-2xl bg-destructive hover:bg-destructive/90 text-destructive-foreground">Ulang Permaianan</AlertDialogAction>
+            <AlertDialogAction onClick={() => { try { localStorage.removeItem(LS_FILTER_KEY); localStorage.removeItem(LS_HIDDEN_KEY); localStorage.removeItem(LS_HIDE_MODE_KEY); localStorage.removeItem(LS_VOTE_KEY); localStorage.removeItem(LS_VOTE_HISTORY_KEY); } catch { } setVoteHistory(null); resetGame(); }} className="flex-1 h-12 rounded-2xl bg-destructive hover:bg-destructive/90 text-destructive-foreground">Ulang Permaianan</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

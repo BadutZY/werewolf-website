@@ -140,8 +140,7 @@ export function DistributionScreen() {
           </Button>
         </div>
       </div>
-
-      {/* Name modal */}
+      
       <Dialog open={modal.type === "name"} onOpenChange={(o) => !o && setModal({ type: "none" })}>
         <DialogContent className="glass-strong rounded-3xl max-w-sm">
           <DialogHeader>
@@ -169,7 +168,6 @@ export function DistributionScreen() {
         </DialogContent>
       </Dialog>
 
-      {/* Reveal modal */}
       <Dialog
         open={modal.type === "reveal"}
         onOpenChange={(o) => !o && setModal({ type: "none" })}
@@ -222,7 +220,6 @@ export function DistributionScreen() {
         </DialogContent>
       </Dialog>
 
-      {/* Cancel confirmation */}
       <AlertDialog open={confirmCancel} onOpenChange={setConfirmCancel}>
         <AlertDialogContent className="glass-strong rounded-3xl max-w-sm border-destructive/30">
           <AlertDialogHeader>
